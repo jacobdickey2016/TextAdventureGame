@@ -1,0 +1,417 @@
+;You must find a way to defeat the dragon and obtain the gem. You begin in the middle of the dungeon.
+BR main 
+
+moveOptm: .ASCII "1)Orange \n2)Green \n3)Blue \n4)Red \n5)Yellow \n6)Brown \n7)Stay Here\n\x00"
+Descripm: .ASCII "Circular room with six colored doors. \n\x00"
+Middle:  STRO options , d
+         ;STRO choose , d
+         DECI a , d
+         LDA a , d
+         CPA 0 , i 
+         BRLE aerrorm
+         CPA 1 , i 
+         BRLE lookm
+         CPA 2 , i 
+         BRLE movem
+         CPA 3 , i 
+         BRLE grabm
+         CPA 5 , i 
+         BRGE aerrorm
+        ;attack:
+                 STRO noAttack , d 
+                 BR Middle
+         aerrorm:STRO aError , d
+                 BR Middle
+         lookm:  STRO Descripm , d
+                 BR Middle
+         movem:  STRO moveTo , d
+                 STRO moveOptm , d
+                 ;STRO choose , d
+                 DECI m , d
+                 LDA m , d
+                 CPA 0 , i
+                 BRLE merrorm
+                 CPA 1 , i
+                 BRLE orangeM ;go to orange from middle
+                 CPA 2 , i
+                 BRLE greenM ;go counter-clockwise
+                 CPA 3 , i
+                 BRLE blueM ;go to blue from middle
+                 CPA 4 , i
+                 BRLE redM
+                 CPA 5 , i
+                 BRLE yellowM
+                 CPA 6 , i
+                 BRLE brownM
+                 CPA 8 , i
+                 BRGE merrorm
+       ;stayHere:
+                 BR Middle
+         brownM: CALL Brown
+                 ret0
+         orangeM:STRO locked , d
+                 BR Middle
+         greenM: CALL Green
+                 ret0
+         blueM:  CALL Blue
+                 ret0
+         redM:   CALL Red
+                 ret0
+         yellowM:CALL Yellow
+                 ret0
+         merrorm:STRO noMove , d
+                 BR movem
+         grabm:  STRO noItem , d
+                 BR Middle
+         
+;-----------------------------------------------------------------------------
+ss: .ASCII "You picked up the shiney sword. \n\x00"
+moveOpto: .ASCII "1)Left \n2)Middle \n3)Stay Here \n\x00"
+Descripo: .ASCII "Orange Room. There is a door on the left side of the room. There is a shiney sword on the ground. \n\x00"
+Orange:  STRO options , d
+         ;STRO choose , d
+         DECI a , d
+         LDA a , d
+         CPA 0 , i 
+         BRLE aerroro
+         CPA 1 , i 
+         BRLE looko
+         CPA 2 , i 
+         BRLE moveo
+         CPA 3 , i 
+         BRLE grabo
+         CPA 5 , i 
+         BRGE aerroro
+        ;attack:
+                 STRO noAttack , d 
+                 BR Orange
+         aerroro:STRO aError , d
+                 BR Orange
+         looko:  STRO Descripo , d
+                 BR Orange
+         moveo:  STRO moveTo , d
+                 STRO moveOpto , d
+                 ;STRO choose , d
+                 DECI m , d
+                 LDA m , d
+                 CPA 0 , i
+                 BRLE merroro
+                 CPA 1 , i
+                 BRLE greenO
+                 CPA 2 , i
+                 BRLE middleO
+                 CPA 4 , i
+                 BRGE merroro
+       ;stayHere:
+                 BR Orange
+         greenO: CALL Green
+                 ret0
+         middleO:STRO locked , d
+                 BR Orange
+         merroro:STRO noMove , d
+                 BR moveo
+         grabo:  LDA 2 , i
+                 STA i , d
+                 STRO ss , d
+                 BR Orange
+         ;ret0
+;-----------------------------------------------------------------------------
+moveOptg: .ASCII "1)Right \n2)Middle \n3)Stay Here \n\x00"
+Descripg: .ASCII "Green Room \n\x00"
+Green:   STRO options , d
+         ;STRO choose , d
+         DECI a , d
+         LDA a , d
+         CPA 0 , i 
+         BRLE aerrorg
+         CPA 1 , i 
+         BRLE lookg
+         CPA 2 , i 
+         BRLE moveg
+         CPA 3 , i 
+         BRLE grabg
+         CPA 5 , i 
+         BRGE aerrorg
+        ;attack:
+                 STRO noAttack , d 
+                 BR Green
+         aerrorg:STRO aError , d
+                 BR Green
+         lookg:  STRO Descripg , d
+                 BR Green
+         moveg:  STRO moveTo , d
+                 STRO moveOptg , d
+                 ;STRO choose , d
+                 DECI m , d
+                 LDA m , d
+                 CPA 0 , i
+                 BRLE merrorg
+                 CPA 1 , i
+                 BRLE orangeG
+                 CPA 2 , i
+                 BRLE middleG
+                 CPA 4 , i
+                 BRGE merrorg
+       ;stayHere:
+                 BR Green
+         orangeG:CALL Orange
+                 ret0
+         middleG:CALL Middle
+                 ret0
+         merrorg:STRO noMove , d
+                 BR moveg
+         grabg:  STRO noItem , d
+                 BR Green
+         ;ret0
+;-----------------------------------------------------------------------------
+ws: .ASCII "You picked up the rusty sword. \n\x00"
+moveOptl: .ASCII "1)Middle \n2)Stay Here \n\x00" 
+Descripl: .ASCII "Blue Room. There are no other doors than the one you came through. There is a rusty sword on the ground. \n\x00"
+Blue:    STRO options , d
+         ;STRO choose , d
+         DECI a , d
+         LDA a , d
+         CPA 0 , i 
+         BRLE aerrorl
+         CPA 1 , i 
+         BRLE lookl
+         CPA 2 , i 
+         BRLE movel
+         CPA 3 , i 
+         BRLE grabl
+         CPA 5 , i 
+         BRGE aerrorl
+        ;attack:
+                 STRO noAttack , d 
+                 BR Blue
+         aerrorl:STRO aError , d 
+                 BR Blue
+         lookl:  STRO Descripl , d
+                 BR Blue
+         movel:  STRO moveTo , d
+                 STRO moveOptl , d
+                 ;STRO choose , d
+                 DECI m , d
+                 LDA m , d
+                 CPA 0 , i
+                 BRLE merrorl
+                 CPA 1 , i
+                 BRLE middleL  ;go to middle
+                 CPA 3 , i
+                 BRGE merrorl
+       ;stayHere:
+                 BR Blue
+         middleL:CALL Middle
+                 ret0
+         merrorl:STRO noMove , d
+                 BR movel
+         grabl:  LDA 1 , i 
+                 STA i , d
+                 STRO ws , d
+                 BR Blue
+         ;ret0
+;-----------------------------------------------------------------------------
+moveOptr: .ASCII "1)Left \n2)Middle \n3)Stay Here \n\x00"
+Descripr: .ASCII "Red Room \n\x00"
+Red:     STRO options , d
+         ;STRO choose , d
+         DECI a , d
+         LDA a , d
+         CPA 0 , i 
+         BRLE aerrorr
+         CPA 1 , i 
+         BRLE lookr
+         CPA 2 , i 
+         BRLE mover
+         CPA 3 , i 
+         BRLE grabr
+         CPA 5 , i 
+         BRGE aerrorr
+        ;attack:
+                 STRO noAttack , d 
+                 BR Red
+         aerrorr:STRO aError , d
+                 BR Red
+         lookr:  STRO Descripr , d
+                 BR Red
+         mover:  STRO moveTo , d
+                 STRO moveOptr , d
+                 ;STRO choose , d
+                 DECI m , d
+                 LDA m , d
+                 CPA 0 , i
+                 BRLE merrorr
+                 CPA 1 , i
+                 BRLE yellowR
+                 CPA 2 , i
+                 BRLE middleR
+                 CPA 4 , i
+                 BRGE merrorr
+       ;stayHere:
+                 BR Red
+         yellowR:CALL Yellow
+                 ret0
+         middleR:CALL Middle
+                 ret0
+         merrorr:STRO noMove , d
+                 BR mover
+         grabr:  STRO noItem , d
+                 BR Red
+         ;ret0
+;-----------------------------------------------------------------------------
+moveOpty: .ASCII "1)Left \n2)Right \n3)Middle \n4)Stay Here \n\x00"
+Descripy: .ASCII "Yellow Room \n\x00"
+Yellow:  STRO options , d
+         ;STRO choose , d
+         DECI a , d
+         LDA a , d
+         CPA 0 , i 
+         BRLE aerrory
+         CPA 1 , i 
+         BRLE looky
+         CPA 2 , i 
+         BRLE movey
+         CPA 3 , i 
+         BRLE graby
+         CPA 5 , i 
+         BRGE aerrory
+        ;attack:
+                 STRO noAttack , d 
+                 BR Yellow
+         aerrory:STRO aError , d
+                 BR Yellow
+         looky:  STRO Descripy , d
+                 BR Yellow
+         movey:  STRO moveTo , d
+                 STRO moveOpty , d
+                 ;STRO choose , d
+                 DECI m , d
+                 LDA m , d
+                 CPA 0 , i
+                 BRLE merrory
+                 CPA 1 , i
+                 BRLE brownY 
+                 CPA 2 , i
+                 BRLE redY
+                 CPA 3 , i
+                 BRLE middleY
+                 CPA 5 , i
+                 BRGE merrory
+       ;stayHere:
+                 BR Yellow
+         brownY: CALL Brown
+                 ret0
+         redY:   CALL Red
+                 ret0
+         middleY:CALL Middle
+                 ret0
+         merrory:STRO noMove , d
+                 BR movey
+         graby:  STRO noItem , d
+                 BR Yellow
+         ;ret0
+;-----------------------------------------------------------------------------
+moveOptb: .ASCII "1)Right \n2)Middle \n3)Stay Here \n\x00"
+Descripb: .ASCII "Brown Room. THERE'S A GIANT DRAGON GUARDING A LARGE GEM!\n\x00"
+kill: .ASCII "You have slain the dragon! \n\x00"
+winner: .ASCII "You got the gem! You Win! \n\x00"
+loser: .ASCII "The dragon is still alive and eats you! You Lose! \n\x00"
+Brown:   STRO options , d
+         ;STRO choose , d
+         DECI a , d
+         LDA a , d
+         CPA 0 , i 
+         BRLE aerrorb
+         CPA 1 , i 
+         BRLE lookb
+         CPA 2 , i 
+         BRLE moveb
+         CPA 3 , i 
+         BRLE grabb
+         CPA 5 , i 
+         BRGE aerrorb
+        ;attack:
+                 LDA h , d
+                 CPA 0 , i
+                 BRLE dead
+                 LDA i , d
+                 STA -2 , s
+                 LDA h , d
+                 STA -4 , s
+                 SUBSP 6 , i ;push #s #dh #retVal 
+                 CALL swordHit
+                 ADDSP 6 , i ;pop #s #dh #retVal 
+                 LDA -6 , s
+                 STA h , d
+                 LDA h , d
+                 CPA 1 , i
+                 BRGT lose
+                 STRO kill , d
+                 BR Brown
+         lose:   STRO loser , d 
+                 ret0
+         dead:   STRO noAttack , d 
+                 BR Brown
+         aerrorb:STRO aError , d
+                 BR Brown
+         lookb:  STRO Descripb , d
+                 BR Brown
+         moveb:  STRO moveTo , d
+                 STRO moveOptb , d
+                 ;STRO choose , d
+                 DECI m , d
+                 LDA m , d
+                 CPA 0 , i
+                 BRLE merrorb
+                 CPA 1 , i
+                 BRLE yellowB 
+                 CPA 2 , i
+                 BRLE middleB
+                 CPA 4 , i
+                 BRGE merrorb
+       ;stayHere:
+                 BR Brown
+         yellowB:CALL Yellow
+                 ret0
+         middleB:CALL Middle
+                 ret0
+         merrorb:STRO noMove , d
+                 BR moveb
+         grabb:  LDA h , d
+                 CPA 0 , i
+                 BRLE win
+                 STRO noGrab , d
+                 BR Brown
+         win:    STRO winner , d
+                 ret0
+         ;ret0
+;-----------------------------------------------------------------------------
+retVal: .EQUATE 4 ; return value #2d
+dh: .EQUATE 6;formal parameter #2d
+s: .EQUATE 8 ;formal parameter #2d
+z: .EQUATE 0 ;local variable #2d
+swordHit:SUBSP 2 , i ;allocate #z
+         LDA dh , s ;dh
+         SUBA s , s ;s
+         STA z , s ;z
+         STA retVal , s
+         ret2 ;deallocate #z
+;-----------------------------------------------------------------------------
+a: .WORD 5 ;action (start one over number of options so BRLE works)
+h: .WORD 2 ;dragons health
+i: .WORD 0 ;no current item
+m: .WORD 0 ;move to where
+locked: .ASCII "This door seems to be locked. \n\x00"
+intro: .ASCII "You must find a way to defeat the dragon and obtain the gem. You begin in the middle of the dungeon. \n\x00"
+options: .ASCII "What would you like to do? \n1)Look Around \n2)Move \n3)Grab Item \n4)Attack \n\x00"
+choose: .ASCII "Choose: " ;put after each 'options' or 'moveopt'
+aError: .ASCII "That wasn't one of the options, try again. \n\x00"
+noMove: .ASCII "You can't move here, try again. \n\x00"
+moveTo: .ASCII "Where do you want to move? \n\x00"
+noItem: .ASCII "There's nothing important here to grab. \n\x00"
+noGrab: .ASCII "You can't grab that right now, the dragon is guarding it. \n\x00"
+noAttack: .ASCII "Swing and a miss. There's nothing here to attack. \n\x00"
+main:    STRO intro , d
+         CALL Middle
+         STOP
+         .END
